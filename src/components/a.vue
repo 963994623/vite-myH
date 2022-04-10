@@ -25,5 +25,9 @@ onMounted(() => {
     .then((res: any) => {
       console.log(res);
     });
+
+  proxy.$request.get("/login", { name: "javl" }).then((res: any) => {
+    console.log(res);
+  });
 });
 </script>

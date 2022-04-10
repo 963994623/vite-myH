@@ -42,8 +42,6 @@ service.interceptors.response.use((res: AxiosResponse) => {
  * @param {*} options 请求配置 
  */
 function request(options: AxiosRequestConfig) {
-    console.log(options);
-    console.log(config);
 
     options.method = options.method || 'get';
     if (options.method.toLowerCase() === 'get') {
@@ -56,5 +54,16 @@ function request(options: AxiosRequestConfig) {
     }
     return service(options)
 }
+['get', 'post', 'put', 'delete'].forEach(item => {
+    //@ts-ignore
+    request[item] = (url: string, data: any, options: any) => {
+        return request({
+            url,
+            method: item,
+            data,
+            ...options
+        })
+    }
+})
 
 export default request
