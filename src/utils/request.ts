@@ -12,6 +12,7 @@ const service = axios.create({
     timeout: 8000,
 
 })
+//请求拦截
 service.interceptors.request.use((req: AxiosRequestConfig) => {
     //TODO
     const headers: any = req.headers;
@@ -20,7 +21,7 @@ service.interceptors.request.use((req: AxiosRequestConfig) => {
     }
     return req
 })
-
+//相应拦截
 service.interceptors.response.use((res: AxiosResponse) => {
     const { code, data, msg } = res.data;
     if (code === 200) {

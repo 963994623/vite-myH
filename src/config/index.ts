@@ -25,4 +25,5 @@ export default {
   mock: true,
   //@ts-ignore
   ...EnvConfig[env],
+  namespace: "futurefe",
 };

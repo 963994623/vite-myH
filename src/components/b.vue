@@ -4,8 +4,16 @@
 </template>
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
+import {
+  onMounted,
+  getCurrentInstance,
+  Component,
+  ComponentInternalInstance,
+} from "vue";
 const router = useRouter();
 const goHome = () => {
   router.push("/welcome");
 };
+const { proxy } = getCurrentInstance() as any;
+proxy.$storage.getItem("futurefe");
 </script>

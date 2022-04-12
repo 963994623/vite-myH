@@ -1,23 +1,16 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import home from "../views/home.vue";
-import a from "../components/a.vue";
-import b from "../components/b.vue";
+
 const router = [
     {
         path: "/",
         name: "home",
-        component: home,
+        component: () => import(/* webpackChunkName: "home" */ "../views/home.vue"),
         redirect: '/welcome',
         children: [
             {
-                name: 'welcome',
-                path: '/welcome',
-                component: a
-            },
-            {
-                name: 'login',
-                path: '/login',
-                component: b
+                path: "/welcome",
+                name: "welcome",
+                component: () => import(/* webpackChunkName: "welcome" */ "../views/welcome.vue")
             }
         ]
     },

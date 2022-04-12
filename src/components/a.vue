@@ -3,31 +3,12 @@
   <router-link to="/login">去登录</router-link>
 </template>
 <script lang="ts" setup>
-import {
-  onMounted,
-  getCurrentInstance,
-  Component,
-  ComponentInternalInstance,
-} from "vue";
+import { getCurrentInstance } from "vue";
 interface _thisT {
   [key: string]: any;
 }
 const { proxy } = getCurrentInstance() as _thisT;
-onMounted(() => {
-  proxy
-    .$request({
-      method: "get",
-      url: "login",
-      data: {
-        name: "javkl",
-      },
-    })
-    .then((res: any) => {
-      console.log(res);
-    });
 
-  proxy.$request.get("/login", { name: "javl" }).then((res: any) => {
-    console.log(res);
-  });
-});
+console.log(proxy.$storage.getItem("password"));
+
 </script>
