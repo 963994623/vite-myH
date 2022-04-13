@@ -1,6 +1,7 @@
 <template>
 
     <div class="welcome">我是welcome</div>
+    132456789789
 </template>
 
 
