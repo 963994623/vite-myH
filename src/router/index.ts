@@ -23,7 +23,7 @@ const router = [
         meta: {
             title: "登录"
         },
-        component: () => import('../views/welcome.vue')
+        component: () => import('../views/Login.vue')
     }
 ]
 const route = createRouter({

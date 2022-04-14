@@ -3,6 +3,8 @@ import { ElMessage } from "element-plus";
 import { Logger } from "sass";
 import config from "../config"
 import router from '../router'
+import { RequestConfig } from './interface';
+
 
 const TOKEN_INVALID = "token认证失败"
 const NETWORK_ERROR = "网络错误"
@@ -42,12 +44,19 @@ service.interceptors.response.use((res: AxiosResponse) => {
  * 请求核心函数
  * @param {*} options 请求配置 
  */
-function request(options: AxiosRequestConfig) {
+function request(options: RequestConfig) {
 
     options.method = options.method || 'get';
     if (options.method.toLowerCase() === 'get') {
         options.params = options.data;
     }
+
+    //做局部mock判定   因为config下做了全局的mock为true 
+    if (options.mock != 'undefined') {
+        config.mock = options.mock
+    }
+
+
     if (config.env === 'prod') {
         service.defaults.baseURL = config.baseApi
     } else {
