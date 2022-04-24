@@ -1,9 +1,11 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from "axios"
 import { ElMessage } from "element-plus";
-import { Logger } from "sass";
+import 'element-plus/dist/index.css'
+
 import config from "../config"
 import router from '../router'
 import { RequestConfig } from './interface';
+import storage from './storage'
 
 
 const TOKEN_INVALID = "token认证失败"
@@ -16,23 +18,30 @@ const service = axios.create({
 })
 //请求拦截
 service.interceptors.request.use((req: AxiosRequestConfig) => {
+
     //TODO
+    const { token } = storage.getItem('userInfo') || "";
     const headers: any = req.headers;
-    if (headers.Authorization) {
-        headers.Authorization = "jock"
+
+    if (!headers.Authorization) {
+        headers.Authorization = "Bearer " + token
     }
+
     return req
+
 })
+
 //相应拦截
 service.interceptors.response.use((res: AxiosResponse) => {
     const { code, data, msg } = res.data;
+
     if (code === 200) {
         return data;
-    } else if (code === 40001) {
-        ElMessage.error(TOKEN_INVALID)
+    } else if (code === 50001) {
+        ElMessage(TOKEN_INVALID)
         setTimeout(() => {
             router.push('/login')
-        }, 1500)
+        }, 15000)
 
         return Promise.reject(TOKEN_INVALID)
     } else {
@@ -52,8 +61,9 @@ function request(options: RequestConfig) {
     }
 
     //做局部mock判定   因为config下做了全局的mock为true 
-    if (options.mock != 'undefined') {
+    if (typeof options.mock !== 'undefined') {
         config.mock = options.mock
+
     }
 
 

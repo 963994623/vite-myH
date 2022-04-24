@@ -10,7 +10,7 @@
                     <el-input type="password" :prefix-icon="View" v-model="user.userPwd"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="login" type="primary" class="btn-login">登录</el-button>
+                    <el-button @click="loginBtn" type="primary" class="btn-login">登录</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -20,14 +20,13 @@
 
 <script setup lang="ts">
 import { User, View } from "@element-plus/icons-vue"
-import { reactive, ref, getCurrentInstance } from "vue";
+import { reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { login } from "../api"
+import { useStore } from "vuex"
+import { Axios, AxiosResponse } from 'axios';
 
-interface _thisT {
-    [key: string]: any;
-}
-
-const { proxy } = getCurrentInstance() as _thisT;
+const store = useStore();
 const router = useRouter();
 
 
@@ -45,20 +44,19 @@ const rules = reactive({
     ]
 })
 //登录请求
-const login = () => {
-    (userForm.value as any).validate((valid: any) => {
+const loginBtn = () => {
+    (userForm.value as any).validate(async (valid: any) => {
         if (valid) {
-            proxy.$api.login(user).then((res: any) => {
-                proxy.$store.commit("saveUserInfo", res);
+            login(user).then(res => {
+                store.commit("saveUserInfo", res);
                 router.push('/welcome')
-
             })
-
 
         } else {
             return false
         }
     })
+
 
 }
 const userForm = ref("0")
