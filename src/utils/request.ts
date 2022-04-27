@@ -41,7 +41,7 @@ service.interceptors.response.use((res: AxiosResponse) => {
         ElMessage(TOKEN_INVALID)
         setTimeout(() => {
             router.push('/login')
-        }, 15000)
+        }, 5000)
 
         return Promise.reject(TOKEN_INVALID)
     } else {

@@ -94,9 +94,9 @@
         </el-form-item>
         <el-form-item label="状态" prop="state">
           <el-select v-model="userDialog.state" style="position: fixed">
-            <el-option :value="0" label="在职"></el-option>
-            <el-option :value="1" label="离职"></el-option>
-            <el-option :value="2" label="试用期"></el-option>
+            <el-option :value="1" label="在职"></el-option>
+            <el-option :value="2" label="离职"></el-option>
+            <el-option :value="3" label="试用期"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="系统角色" prop="roleList">
@@ -159,8 +159,8 @@ interface Columns {
   width?: number | string;
   formatter?: (row: any, column: any, cellValue: any) => any;
 }
+//用户查询
 interface UserQuery {
-  //用户查询
   userId: string;
   userName: string;
   state: number;
@@ -253,9 +253,9 @@ const columns: Columns[] = reactive([
     prop: "state",
     formatter(row, column, cellValue) {
       const state: { [k: number]: string } = {
-        0: "在职",
-        1: "离职",
-        2: "试用期",
+        1: "在职",
+        2: "离职",
+        3: "试用期",
       };
       return state[cellValue];
     },
@@ -283,10 +283,11 @@ const userDialog: UserDiaLog = reactive({
   userEmail: "",
   mobile: "",
   job: "",
-  state: 3,
+  state: 0,
   roleList: [],
   deptId: [],
 });
+
 //dialog all角色列表
 const roleList: Ref<RoleList[]> = ref([]);
 //dialog all部门列表

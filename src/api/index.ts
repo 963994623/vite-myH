@@ -18,16 +18,17 @@ export function notiveCount() {
 
     })
 }
-export function getMenuList() {
+export function getMenuList(params: any) {
     return request({
         url: "/menu/list",
         method: "get",
-        data: {},
-        mock: true,
+        data: params,
+        mock: false,
 
     })
 }
-export function getUserList(params: any) {
+//获取菜单
+export function getUserList(params?: any) {
     return request({
         url: '/users/list',
         method: 'get',
@@ -68,4 +69,14 @@ export function userSubmit(params: any) {
         mock: false,
     })
 }
+//菜单页  提交增删改
+export function menuSubmit(params: any) {
+    return request({
+        url: '/menu/operate',
+        method: 'post',
+        data: params,
+        mock: false,
+    })
+}
+
 
