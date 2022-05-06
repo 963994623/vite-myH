@@ -18,7 +18,7 @@ export function notiveCount() {
 
     })
 }
-export function getMenuList(params: any) {
+export function getMenuList(params?: any) {
     return request({
         url: "/menu/list",
         method: "get",
@@ -44,8 +44,8 @@ export function UserDel(params: any) {
         mock: false,
     })
 }
-
-export function getRoleList() {
+//获取全部角色列表
+export function getRoleAllList() {
     return request({
         url: '/roles/allList',
         method: 'get',
@@ -79,4 +79,31 @@ export function menuSubmit(params: any) {
     })
 }
 
+//获取角色列表
+export function getRoleList(params: any) {
+    return request({
+        url: '/roles/list',
+        method: 'get',
+        data: params,
+        mock: true,
+    })
+}
+//角色的创建删除修改
+export function roleOperate(params: any) {
+    return request({
+        url: '/roles/operate',
+        method: 'post',
+        data: params,
+        mock: true,
+    })
+}
 
+//角色权限更新
+export function updatePermission(params: any) {
+    return request({
+        url: '/roles/update/permission',
+        method: 'post',
+        data: params,
+        mock: true,
+    })
+}

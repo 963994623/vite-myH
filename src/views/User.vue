@@ -143,7 +143,7 @@ import {
 import {
   getUserList,
   UserDel,
-  getRoleList,
+  getRoleAllList,
   getdeptList,
   userSubmit,
 } from "../api";
@@ -323,7 +323,7 @@ const pager: { pageNum: number; pageSize: number; total?: number } = reactive({
 onMounted(() => {
   getUserLists();
   getDeptLists();
-  getRoleLists();
+  getRoleAllLists();
 });
 //获取user用户数据列表
 const getUserLists = async () => {
@@ -400,8 +400,8 @@ const getDeptLists = async () => {
   deptList.value = list;
 };
 //获取角色列表
-const getRoleLists = async () => {
-  let list = (await getRoleList()) as any;
+const getRoleAllLists = async () => {
+  let list = (await getRoleAllList()) as any;
   roleList.value = list;
 };
 // 查询

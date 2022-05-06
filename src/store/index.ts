@@ -10,7 +10,7 @@ import { stateInterface } from "./vuexInterface"
 
 
 const state = {
-    userInfo: "" || storage.getItem("userInfo"),    //获取用户信息
+    userInfo: storage.getItem("userInfo") || {},    //获取用户信息
 }
 
 

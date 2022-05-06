@@ -114,7 +114,7 @@ const getNoticeCount = async () => {
 //获取左侧列表
 const getMenu = async () => {
   try {
-    const list: AxiosResponse = await getMenuList();
+    const list: AxiosResponse = await getMenuList({});
     userMenu.value = list;
   } catch (error) {
     console.log(error);
