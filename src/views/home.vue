@@ -10,6 +10,7 @@
             :is-dot="noticeCount > 0 ? true : false"
             class="notice"
             type="danger"
+            @click="router.push('/audit/approve')"
           >
             <el-icon size="6" color="#409eff">
               <bell></bell>
@@ -70,15 +71,19 @@ import { ref, reactive, computed, onMounted, Ref } from "vue";
 import { useStore } from "vuex";
 import { Axios, AxiosResponse } from "axios";
 import { Bell, Right } from "@element-plus/icons-vue";
+import storage from "../utils/storage";
 //接口代码
-import { notiveCount, getMenuList } from "../api";
+import { notiveCount, getMenuList, getPermissionList } from "../api";
 
 // 组件引入
 import TreeMenu from "../components/TreeMenu.vue";
 import BreadCrumb from "../components/BreadCrumb.vue";
 import { ElMessage } from "element-plus";
+// import route from "../router";
+import { useRouter } from "vue-router";
 
 const store = useStore();
+const router = useRouter();
 
 onMounted(() => {
   getNoticeCount();
@@ -87,11 +92,17 @@ onMounted(() => {
 
 const isCollapse = ref(false);
 //获取用户信息
-const userInfo = computed(() => {
-  return store.state.userInfo;
+let userInfo = computed({
+  get() {
+    return store.state.userInfo;
+  },
+  set() {},
 });
 //通知数量
-let noticeCount: Ref = ref(0);
+// let noticeCount: Ref = ref(0);
+let noticeCount = computed(() => {
+  return store.state.noticeCount;
+});
 //左侧菜单列表
 let userMenu: Ref = ref(null);
 //当前高亮列表项
@@ -99,6 +110,10 @@ let activeMenu: Ref = ref(location.hash.slice(1));
 
 //个人信息选项
 const handleLogout = (command: string | number | object) => {
+  if (command === "email") return;
+  store.commit("saveUserInfo", "");
+  userInfo.value = {};
+  router.push("/login");
   ElMessage(`click on item${command}`);
 };
 
@@ -106,7 +121,8 @@ const handleLogout = (command: string | number | object) => {
 const getNoticeCount = async () => {
   try {
     const res: AxiosResponse = await notiveCount();
-    noticeCount.value = res;
+    store.commit("saveNotiveCount", res);
+    // noticeCount.value = res;
   } catch (error) {
     console.log(error);
   }
@@ -114,8 +130,10 @@ const getNoticeCount = async () => {
 //获取左侧列表
 const getMenu = async () => {
   try {
-    const list: AxiosResponse = await getMenuList({});
-    userMenu.value = list;
+    const { MenuList, actionList } = await getPermissionList();
+    userMenu.value = MenuList;
+    store.commit("saveMenuList", MenuList);
+    store.commit("saveActionList", actionList);
   } catch (error) {
     console.log(error);
   }
@@ -127,6 +145,9 @@ const getMenu = async () => {
   .user {
     display: flex;
     align-items: center;
+    .notice {
+      cursor: pointer;
+    }
 
     .el-dropdown {
       margin-left: 15px;

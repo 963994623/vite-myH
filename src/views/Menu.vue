@@ -22,7 +22,9 @@
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary" @click="handleAdd(1)">新增</el-button>
+        <el-button type="primary" @click="handleAdd(1)" v-has:add="'menu-add'"
+          >新增</el-button
+        >
       </div>
       <el-table
         width="100%"
@@ -43,8 +45,8 @@
           <template #default="scope">
             <el-button
               @click="handleAdd(2, scope.row)"
-              type="primary"
               size="small"
+              v-has:add="'menu-add'"
             >
               新增
             </el-button>
@@ -52,13 +54,15 @@
               @click="handleEdit(scope.row)"
               type="primary"
               size="small"
+              v-has:edit="'menu-edit'"
             >
               编辑
             </el-button>
             <el-button
               @click="handleDel(scope.row._id)"
-              type="primary"
+              type="danger"
               size="small"
+              v-has:delete="'menu-delete'"
             >
               删除
             </el-button>
@@ -151,6 +155,7 @@ import { AxiosResponse } from "axios";
 import { getMenuList, menuSubmit } from "../api/index";
 import util from "../utils/util";
 import { success } from "../utils/log";
+import type { FormInstance } from "element-plus";
 
 //interface
 interface Menu {
@@ -172,7 +177,7 @@ interface QueryForm {
 
 //form对象
 let menuFormDialog: Ref = ref(null);
-
+let form = ref<FormInstance>();
 const queryForm: QueryForm = reactive({
   menuState: 1,
 });

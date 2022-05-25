@@ -27,8 +27,15 @@
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary" @click="handleCreate">新增</el-button>
-        <el-button type="danger" @click="handlePatchDel">批量删除</el-button>
+        <el-button type="primary" @click="handleCreate" v-has:add="'user-add'"
+          >新增</el-button
+        >
+        <el-button
+          type="danger"
+          @click="handlePatchDel"
+          v-has:allDelete="'user-allDelete'"
+          >批量删除</el-button
+        >
       </div>
       <el-table
         width="100%"
@@ -46,10 +53,17 @@
         />
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.row)"
+            <el-button
+              size="small"
+              @click="handleEdit(scope.row)"
+              v-has:edit="'user-edit'"
               >编辑</el-button
             >
-            <el-button type="danger" size="small" @click="handleDel(scope.row)"
+            <el-button
+              type="danger"
+              size="small"
+              @click="handleDel(scope.row)"
+              v-has:delete="'user-delete'"
               >删除</el-button
             >
           </template>
@@ -242,8 +256,8 @@ const columns: Columns[] = reactive([
     prop: "role",
     formatter(row, column, cellValue) {
       const state: { [k: number]: string } = {
-        1: "管理员",
-        2: "普通用户",
+        0: "管理员",
+        1: "普通用户",
       };
       return state[cellValue];
     },
@@ -283,7 +297,7 @@ const userDialog: UserDiaLog = reactive({
   userEmail: "",
   mobile: "",
   job: "",
-  state: 0,
+  state: 1,
   roleList: [],
   deptId: [],
 });
@@ -332,12 +346,13 @@ const getUserLists = async () => {
     const { list, page } = (await getUserList(params)) as any;
     userList.value = list;
     pager.total = page.total;
+    console.log(list);
   } catch (e) {
     console.log(e);
   }
 };
 //分页事件处理
-const handleCurrentChange = (current: any) => {
+const handleCurrentChange = (current: number) => {
   pager.pageNum = current;
   getUserLists();
 };
@@ -396,7 +411,7 @@ const handleCreate = () => {
 };
 //获取部门列表
 const getDeptLists = async () => {
-  let list = (await getdeptList()) as any;
+  let list = (await getdeptList({})) as any;
   deptList.value = list;
 };
 //获取角色列表

@@ -30,11 +30,7 @@
 
         <el-table-column label="操作" width="220">
           <template #default="scope">
-            <el-button
-              @click="handleEdit(scope.row)"
-              type="primary"
-              size="small"
-            >
+            <el-button @click="handleEdit(scope.row)" size="small">
               编辑
             </el-button>
             <el-button
@@ -46,7 +42,7 @@
             </el-button>
             <el-button
               @click="handleDel(scope.row._id)"
-              type="primary"
+              type="danger"
               size="small"
             >
               删除
@@ -187,6 +183,7 @@ let roleList = ref([]);
 let pager = ref({
   total: 0,
   pageSize: 10,
+  pageNum: 1,
 });
 //roleDialog
 const roleDialog: Ref = ref({
@@ -230,7 +227,8 @@ const columns: any = reactive([
       let names: string[] = [];
       let list = cellValue.halfCheckedKeys || [];
       list.map((key: string) => {
-        if (key) names.push(actionMaps.value[key]);
+        let name = actionMaps.value[key];
+        if (key && name) names.push(actionMaps.value[key]);
       });
       return names.join(",");
     },
@@ -238,6 +236,13 @@ const columns: any = reactive([
   {
     label: "创建时间",
     prop: "createTime",
+    formatter(row: any, column: any, value: any) {
+      return util.formateDate(new Date(value));
+    },
+  },
+  {
+    label: "更新时间",
+    prop: "updateTime",
     formatter(row: any, column: any, value: any) {
       return util.formateDate(new Date(value));
     },
@@ -257,7 +262,10 @@ onMounted(() => {
 //获取角色列表
 const getRoleLists = async (params?: any) => {
   try {
-    const { list, page }: RoleListAndPage = await getRoleList(params);
+    const { list, page }: RoleListAndPage = await getRoleList({
+      ...queryForm,
+      ...pager.value,
+    });
 
     roleList.value = list as any;
     pager.value.total = page.total;
@@ -292,16 +300,19 @@ const handleAdd = () => {
 const handleEdit = (row: any) => {
   action.value = "edit";
   showModal.value = true;
-  console.log(row);
 
   nextTick(() => {
     // roleDialog.value = { ...row };
-    Object.assign(roleDialog.value, { ...row });
+    Object.assign(roleDialog.value, {
+      _id: row._id,
+      roleName: row.roleName,
+      remark: row.remark,
+    });
   });
 };
 //删除按钮
 const handleDel = async (id: string) => {
-  await roleOperate({ id, action: "delete" });
+  await roleOperate({ _id: id, action: "delete" });
   success("删除成功");
   getRoleLists();
 };
@@ -315,6 +326,7 @@ const handleSubmit = async () => {
         showModal.value = false;
         success("创建成功");
         handleReset("roleFormDialog");
+        // handleReset("form");
         getRoleLists();
       }
     }
@@ -326,7 +338,10 @@ const handleClose = async () => {
   handleReset("roleFormDialog");
 };
 // 分页
-const handleCurrentChange = () => {};
+const handleCurrentChange = (current: number) => {
+  pager.value.pageNum = current;
+  getRoleLists();
+};
 
 //编辑权限按钮
 const handleOpenPermission = (row: any) => {
@@ -359,7 +374,7 @@ const handlePermission = async () => {
     _id: curRoleId.value,
     permissionList: {
       checkedKeys,
-      halfCheckedKey: [...parentKeys, ...halfKeys],
+      halfCheckedKeys: [...parentKeys, ...halfKeys],
     },
   };
 

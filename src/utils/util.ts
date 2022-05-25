@@ -22,5 +22,30 @@ export default {
             }
         }
         return fmt;
+    },
+    //递归动态渲染路由
+    generateRoute(menuList: any) {
+        let routes: any[] = [];
+        const deepRouter = (list: any) => {
+            while (list.length) {
+                let item = list.pop();
+                if (item.action) {
+                    routes.push({
+                        name: item.component,
+                        path: item.path,
+                        meta: {
+                            title: item.menuName
+                        },
+                        component: item.component
+                    })
+                }
+                if (item.children && !item.action) {
+                    deepRouter(item.children)
+                }
+            }
+        }
+        deepRouter(menuList);
+        return routes;
+
     }
 }
