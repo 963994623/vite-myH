@@ -3,6 +3,7 @@ import home from "@/views/home.vue";
 import storage from "../utils/storage";
 import { getPermissionList } from "../api"
 import utils from "../utils/util"
+// import { loadAsyncRoutes } from "../utils/addRouter";
 const router = [
     {
         path: "/",
@@ -72,11 +73,14 @@ const router = [
         component: () => import('../views/404.vue')
     }
 ]
+
 const route = createRouter({
     history: createWebHashHistory(),
     routes: router
 })
-//获取用户拥有的菜单权限
+
+
+// 获取用户拥有的菜单权限
 async function loadAsyncRoutes() {
     let userinfo = storage.getItem("userInfo") || {}
     if (userinfo.token) {
@@ -85,7 +89,7 @@ async function loadAsyncRoutes() {
             let routes = utils.generateRoute(MenuList);
             routes.map(routeItem => {
                 let url = `../views/${routeItem.component}.vue`
-                routeItem.component = () => import(url)
+                routeItem.component = () => import(`/* @vite-ignore */ ${url}`)
                 route.addRoute("home", routeItem);
             })
         } catch (error) {
@@ -97,7 +101,12 @@ async function loadAsyncRoutes() {
 
 
 
+
+
 await loadAsyncRoutes();
+
+
+
 
 // 判断当前地址是否可以访问
 //1.注释掉因为太麻烦 需要从router里获取所有的路由地址  然后和当前跳转的路由地址进行比对 
@@ -121,6 +130,9 @@ route.beforeEach((to, from, next) => {
         next("/404")
     }
 })
-console.log(route);
+
+
+
+
 
 export default route

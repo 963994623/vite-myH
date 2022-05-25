@@ -81,13 +81,18 @@ import BreadCrumb from "../components/BreadCrumb.vue";
 import { ElMessage } from "element-plus";
 // import route from "../router";
 import { useRouter } from "vue-router";
+import request from "../utils/request";
+import { loadAsyncRoutes } from "../utils/addRouter";
 
 const store = useStore();
 const router = useRouter();
 
 onMounted(() => {
   getNoticeCount();
+
   getMenu();
+
+  loadAsyncRoutes();
 });
 
 const isCollapse = ref(false);

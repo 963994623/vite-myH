@@ -69,9 +69,11 @@ function request(options: RequestConfig) {
 
     if (config.env === 'prod') {
         service.defaults.baseURL = config.baseApi
+
     } else {
         service.defaults.baseURL = config.mock ? config.mockApi : config.baseApi
     }
+
     return service(options)
 }
 ['get', 'post', 'put', 'delete'].forEach(item => {

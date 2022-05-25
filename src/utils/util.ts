@@ -46,6 +46,6 @@ export default {
         }
         deepRouter(menuList);
         return routes;
-
     }
+
 }
