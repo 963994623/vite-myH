@@ -18,6 +18,6 @@ export default {
     },
     saveNotiveCount(state: stateInterface, count: number): void {
         state.noticeCount = count;
-        storage.setItem('noticeCount', count)
+        storage.setItem('noticeCount', count);
     }
 }
