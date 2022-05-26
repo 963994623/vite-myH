@@ -129,7 +129,7 @@ import {
 import type { FormInstance } from "element-plus";
 import util from "../utils/util";
 import { success } from "../utils/log";
-import { Menu } from "@element-plus/icons-vue/dist/types";
+// import { Menu } from "@element-plus/icons-vue/dist/types";
 
 //interface
 interface Menu {
