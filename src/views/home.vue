@@ -79,7 +79,6 @@ import { notiveCount, getMenuList, getPermissionList } from "../api";
 import TreeMenu from "../components/TreeMenu.vue";
 import BreadCrumb from "../components/BreadCrumb.vue";
 import { ElMessage } from "element-plus";
-// import route from "../router";
 import { useRouter } from "vue-router";
 import request from "../utils/request";
 import { loadAsyncRoutes } from "../utils/addRouter";

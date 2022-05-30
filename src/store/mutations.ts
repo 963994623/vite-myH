@@ -19,5 +19,9 @@ export default {
     saveNotiveCount(state: stateInterface, count: number): void {
         state.noticeCount = count;
         storage.setItem('noticeCount', count);
+    },
+    saveAddRoutes(state: stateInterface, addRoutes: any[]): void {
+        state.addRoutes = addRoutes;
+        // storage.setItem('addRoutes', addRoutes);
     }
 }

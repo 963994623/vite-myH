@@ -1,9 +1,12 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+// import { useStore } from "vuex";
 import home from "@/views/home.vue";
 import storage from "../utils/storage";
 import { getPermissionList } from "../api"
 import utils from "../utils/util"
-// import { loadAsyncRoutes } from "../utils/addRouter";
+
+// import { loadAsyncRoutes } from "../utils/addRouter"
+import store from "../store"
 const router = [
     {
         path: "/",
@@ -71,7 +74,9 @@ const router = [
             title: "页面不存在"
         },
         component: () => import('../views/404.vue')
-    }
+    },
+
+
 ]
 
 const route = createRouter({
@@ -81,29 +86,84 @@ const route = createRouter({
 
 
 // 获取用户拥有的菜单权限
+// async function loadAsyncRoutes() {
+//     let userinfo = storage.getItem("userInfo") || {}
+//     if (userinfo.token) {
+//         try {
+//             let { MenuList } = await getPermissionList();
+//             let routes = utils.generateRoute(MenuList);
+//             routes.map(routeItem => {
+//                 let url = `../views/${routeItem.component}.vue`
+//                 routeItem.component = () => import(/* @vite-ignore */`${url}`)
+//                 route.addRoute("home", routeItem);
+//             })
+//         } catch (error) {
+//             console.log(error);
+
+//         }
+//     }
+// }
+// await loadAsyncRoutes();
+
+
+
+
+//最新
 async function loadAsyncRoutes() {
+
     let userinfo = storage.getItem("userInfo") || {}
     if (userinfo.token) {
+        let arr: { [key: string]: Function }[] = []
         try {
+            const list = import.meta.glob("../views/**.vue");
             let { MenuList } = await getPermissionList();
             let routes = utils.generateRoute(MenuList);
-            routes.map(routeItem => {
-                let url = `../views/${routeItem.component}.vue`
-                routeItem.component = () => import(`/* @vite-ignore */ ${url}`)
-                route.addRoute("home", routeItem);
+
+            routes.map(async item => {
+                // for (let k in list) {
+                //     let mod = await list[k]();
+                //     if (item.name === mod.default.name) {
+                //         let params = {
+                //             name: item.name,
+                //             path: item.path,
+                //             meta: item.meta,
+                //             component: list[k]
+                //         }
+                //         route.addRoute('home', params)
+                //         arr.push(params)
+
+                //     }
+                // }
+                for (let k in list) {
+                    const name = k.substring(k.lastIndexOf("/") + 1, k.lastIndexOf("."));
+                    if (item.name == name) {
+                        let params = {
+                            name: item.name,
+                            path: item.path,
+                            meta: item.meta,
+                            component: list[k]
+                        }
+                        route.addRoute('home', params)
+                        arr.push(params)
+                    }
+
+                }
             })
+
+
+
         } catch (error) {
             console.log(error);
-
         }
     }
+
 }
+await loadAsyncRoutes()
+route.addRoute({
+    path: "/:pathMatch(.*)",
+    redirect: "/404"
+})
 
-
-
-
-
-await loadAsyncRoutes();
 
 
 
@@ -119,16 +179,25 @@ await loadAsyncRoutes();
 //         return false
 //     }
 // }
-route.beforeEach((to, from, next) => {
+
+route.beforeEach(async (to, from, next) => {
+    // await loadAsyncRoutes();
+    // if (from.name) {
+    //     await loadAsyncRoutes();
+    // }
+
 
     // if (checkPermission(to)) {
     // 2. 使用 router.hasRoute直接对比
     if (route.hasRoute(to.name as any)) {
+
         document.title = to.meta.title as any
         next()
     } else {
         next("/404")
     }
+    // next()
+
 })
 
 

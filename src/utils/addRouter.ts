@@ -1,54 +1,56 @@
 import { getPermissionList } from "../api";
 import storage from "./storage";
 import utils from "./util";
-import { useRouter } from "vue-router";
-const router = useRouter()
+
+import route from "../router"
+
 
 export async function loadAsyncRoutes() {
-    const modules = import.meta.glob('../views/**.vue');
-    let AjArr = AJ(modules);
+
     let userinfo = storage.getItem("userInfo") || {}
     if (userinfo.token) {
+        let arr: { [key: string]: Function }[] = []
         try {
+            const list = import.meta.glob("../views/**.vue");
             let { MenuList } = await getPermissionList();
             let routes = utils.generateRoute(MenuList);
-            console.log(routes);
 
-            routes.map(routeItem => {
-                // let url = `../views/${routeItem.component}.vue`
-                // routeItem.component = () => import(`/* @vite-ignore */ ${url}`)
-                // route.addRoute("home", routeItem);
-                if (routeItem.name.includes(Object.keys(AjArr))) {
-                    let params = {
-                        name: routeItem.name,
-                        path: Object.keys(AjArr[routeItem.name])[0].toLowerCase(),
-                        meta: routeItem.meta,
-                        component: Object.values(AjArr[routeItem.name])[0]
+            routes.map(async item => {
+                // for (let k in list) {
+                //     let mod = await list[k]();
+                //     if (item.name === mod.default.name) {
+                //         let params = {
+                //             name: item.name,
+                //             path: item.path,
+                //             meta: item.meta,
+                //             component: list[k]
+                //         }
+                //         route.addRoute('home', params)
+                //         arr.push(params)
+
+                //     }
+                // }
+                for (let k in list) {
+                    const name = k.substring(k.lastIndexOf("/") + 1, k.lastIndexOf("."));
+                    if (item.name == name) {
+                        let params = {
+                            name: item.name,
+                            path: item.path,
+                            meta: item.meta,
+                            component: list[k]
+                        }
+                        route.addRoute('home', params)
+                        arr.push(params)
                     }
 
-                    console.log(params);
-
-
-                    router.addRoute("home", params as any);
                 }
-
             })
+
+
 
         } catch (error) {
             console.log(error);
+        }
+    }
 
-        }
-    }
-}
-// 将对象在外扩展一层
-function AJ(mapJson: any) {
-    let json: { [key: string]: { [key: string]: string } } = {};
-    for (let key in mapJson) {
-        let lindex = key.lastIndexOf(".");
-        let citrus = key.substring(9, lindex);
-        json[citrus] = {
-            [key]: mapJson[key]
-        }
-    }
-    return json;
 }

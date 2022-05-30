@@ -29,13 +29,14 @@
 
 <script setup lang="ts">
 import { User, View } from "@element-plus/icons-vue";
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getPermissionList, login } from "../api";
 import { useStore } from "vuex";
 import { Axios, AxiosResponse } from "axios";
 import storage from "../utils/storage";
 import utils from "../utils/util";
+// import { loadAsyncRoutes } from "../utils/addRouter";
 
 const store = useStore();
 const router = useRouter();
@@ -56,7 +57,7 @@ const loginBtn = () => {
     if (valid) {
       login(user).then(async (res) => {
         store.commit("saveUserInfo", res);
-        await loadAsyncRoutes();
+        // await loadAsyncRoutes();
         router.push("/welcome");
       });
     } else {
@@ -67,22 +68,22 @@ const loginBtn = () => {
 const userForm = ref("0");
 
 //获取用户拥有的菜单权限
-async function loadAsyncRoutes() {
-  let userinfo = storage.getItem("userInfo") || {};
-  if (userinfo.token) {
-    try {
-      let { MenuList } = await getPermissionList();
-      let routes = utils.generateRoute(MenuList);
-      routes.map((routeItem) => {
-        let url = `../views/${routeItem.component}.vue`;
-        routeItem.component = () => import(url);
-        router.addRoute("home", routeItem);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-}
+// async function loadAsyncRoutes() {
+//   let userinfo = storage.getItem("userInfo") || {};
+//   if (userinfo.token) {
+//     try {
+//       let { MenuList } = await getPermissionList();
+//       let routes = utils.generateRoute(MenuList);
+//       routes.map((routeItem) => {
+//         let url = `../views/${routeItem.component}.vue`;
+//         routeItem.component = () => import(url);
+//         router.addRoute("home", routeItem);
+//       });
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+// }
 </script>
 
 <style lang="scss">

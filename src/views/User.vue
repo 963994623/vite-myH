@@ -346,7 +346,6 @@ const getUserLists = async () => {
     const { list, page } = (await getUserList(params)) as any;
     userList.value = list;
     pager.total = page.total;
-    console.log(list);
   } catch (e) {
     console.log(e);
   }

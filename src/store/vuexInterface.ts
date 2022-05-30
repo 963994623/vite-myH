@@ -2,7 +2,8 @@ export interface stateInterface {
     userInfo: string;
     menuList: Menu[];
     actionList: string[];
-    noticeCount: number
+    noticeCount: number,
+    addRoutes: any[],
 }
 
 
