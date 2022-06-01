@@ -20,7 +20,7 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
-
+  //跨域
   server: {
     port: 8080,
     proxy: {
