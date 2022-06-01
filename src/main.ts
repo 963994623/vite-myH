@@ -11,7 +11,7 @@ const app = createApp(App);
 app.config.globalProperties.$request = request;
 app.config.globalProperties.$storage = storage;
 
-
+//自定义全局指令 按钮权限
 app.directive('has', {
     beforeMount(el, binding, vnode) {
         // 获取按钮权限

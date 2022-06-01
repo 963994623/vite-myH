@@ -20,6 +20,7 @@ export default {
         state.noticeCount = count;
         storage.setItem('noticeCount', count);
     },
+    //测试  动态路由判定存在？
     saveAddRoutes(state: stateInterface, addRoutes: any[]): void {
         state.addRoutes = addRoutes;
         // storage.setItem('addRoutes', addRoutes);

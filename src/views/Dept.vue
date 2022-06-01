@@ -108,6 +108,7 @@ import type { FormInstance, FormRules } from "element-plus";
 import { getdeptList, getUserAllList, deptOperate } from "../api";
 import { success } from "../utils/log";
 
+//接口
 interface queryFromI {
   deptName: string;
 }

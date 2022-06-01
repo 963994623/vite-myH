@@ -28,7 +28,7 @@ const name = "TreeMenu";
 interface Ani {
   userMenu: Array<any> | null;
 }
-
+//接受数据
 const props = withDefaults(defineProps<Ani>(), {
   userMenu: () => [],
 });

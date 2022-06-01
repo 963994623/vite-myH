@@ -1,5 +1,6 @@
 /**
  * 环境配置封装
+ * vite获取当前环境
  */
 
 const env = import.meta.env.MODE || "prod";

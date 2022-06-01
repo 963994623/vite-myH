@@ -45,4 +45,3 @@
   }
 }
 </style>
-<script lang="ts" setup></script>

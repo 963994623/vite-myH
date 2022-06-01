@@ -180,7 +180,7 @@ interface UserQuery {
   state: number;
 }
 
-//用户数据
+//用户数据 列表
 interface User {
   createTime: string;
   deptId: {

@@ -42,6 +42,7 @@ const store = useStore();
 const router = useRouter();
 const route = useRoute();
 
+//表单对象
 let user = reactive({
   userName: "",
   userPwd: "",

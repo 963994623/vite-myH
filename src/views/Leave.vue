@@ -158,6 +158,8 @@ import util from "../utils/util";
 import { getApplyList, leaveOperate } from "../api";
 import { error, success } from "../utils/log";
 const router = useRouter();
+
+//接口
 interface applyTypeI {
   [key: number]: string;
 }

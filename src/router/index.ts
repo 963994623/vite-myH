@@ -108,7 +108,7 @@ const route = createRouter({
 
 
 
-//最新
+//最新 多次更改 生产环境需要使用vite 的import.meta.glob 获取路由 并且不能使用promise的方式 /* list[k]() 会导致首次加载失败
 async function loadAsyncRoutes() {
 
     let userinfo = storage.getItem("userInfo") || {}

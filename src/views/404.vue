@@ -1,6 +1,6 @@
 <template>
   <div class="exception">
-    <!-- <img src="@/assets/images/404.jpg" alt="" /> -->
+    <!-- <img src="@/assets/images/404.jpg" alt=""  /> -->
     <el-button @click="goHome()">回首页</el-button>
   </div>
 </template>

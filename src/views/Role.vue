@@ -131,7 +131,7 @@ import util from "../utils/util";
 import { success } from "../utils/log";
 // import { Menu } from "@element-plus/icons-vue/dist/types";
 
-//interface
+//interface 接口
 interface Menu {
   _id: string;
   parentId: string;

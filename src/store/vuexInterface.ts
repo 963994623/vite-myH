@@ -6,7 +6,7 @@ export interface stateInterface {
     addRoutes: any[],
 }
 
-
+//menu菜单
 export interface Menu {
     chilren?: Menu[]
     createTime: string

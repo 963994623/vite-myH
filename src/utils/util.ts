@@ -3,6 +3,7 @@
  */
 
 export default {
+    //格式化时间
     formateDate(date: any, rule?: string) {
         let fmt = rule || "yyyy-MM-dd hh:mm:ss";
         if (/(y+)/.test(fmt)) {

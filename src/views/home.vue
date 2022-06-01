@@ -66,6 +66,7 @@
 </template>
 
 <script lang="ts" setup>
+//业务主路由
 //框架引入
 import { ref, reactive, computed, onMounted, Ref } from "vue";
 import { useStore } from "vuex";

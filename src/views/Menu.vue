@@ -157,7 +157,7 @@ import util from "../utils/util";
 import { success } from "../utils/log";
 import type { FormInstance } from "element-plus";
 
-//interface
+//interface 接口
 interface Menu {
   _id: string;
   parentId: string;

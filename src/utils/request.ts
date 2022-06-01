@@ -16,7 +16,7 @@ const service = axios.create({
     timeout: 8000,
 
 })
-//请求拦截
+//请求拦截器
 service.interceptors.request.use((req: AxiosRequestConfig) => {
 
     //TODO
