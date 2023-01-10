@@ -169,3 +169,44 @@ export function leaveApprove(params: any) {
         mock: false
     })
 }
+
+
+
+// 新增 商城模块
+
+// 获取商品信息列表
+export function getComList(params: any) {
+    return request({
+        url: '/com/getPageList',
+        method: 'get',
+        data: params,
+        mock: false
+    })
+}
+
+// 获取商品分类列表
+export function getComClassList(params: any) {
+    return request({
+        url: "/comClass/getComClassList",
+        method: 'get',
+        data: params,
+        mock: false
+    })
+}
+// 添加商品信息
+export function createAndEidtCom(params: any) {
+    return request({
+        url: "/com/createAndEditCom",
+        method: 'post',
+        data: params,
+        mock: false
+    })
+}
+export function deleteChecked(params: any) {
+    return request({
+        url: "/com/deleteCheckCom",
+        method: 'post',
+        data: params,
+        mock: false
+    })
+}

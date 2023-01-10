@@ -7,6 +7,9 @@ import request from './utils/request';
 import storage from './utils/storage';
 import { loadAsyncRoutes } from "./utils/addRouter"
 import "@/assets/style/index.scss"
+
+import Rocket from "../packages"
+
 const app = createApp(App);
 app.config.globalProperties.$request = request;
 app.config.globalProperties.$storage = storage;
@@ -34,4 +37,5 @@ app.directive('has', {
 app.use(router)
 await loadAsyncRoutes()
 app.use(store)
+app.use(Rocket)
 app.mount('#app')

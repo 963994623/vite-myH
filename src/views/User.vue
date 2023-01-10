@@ -1,7 +1,7 @@
 <template>
   <div class="user-manag">
     <div class="query-form">
-      <el-form ref="form" :inline="true" :model="user">
+      <!-- <el-form ref="form" :inline="true" :model="user">
         <el-form-item prop="userId" label="用户ID">
           <el-input v-model="user.userId" placeholder="请输入用户ID"></el-input>
         </el-form-item>
@@ -23,9 +23,14 @@
           <el-button type="primary" @click="handleQuery">查询</el-button>
           <el-button @click="handleReset('form')">重置</el-button>
         </el-form-item>
-      </el-form>
+      </el-form> -->
+      <QueryForm
+        :form="formItemArr"
+        v-model="user"
+        @handleQuery="handleQuery"
+      />
     </div>
-    <div class="base-table">
+    <!-- <div class="base-table">
       <div class="action">
         <el-button type="primary" @click="handleCreate" v-has:add="'user-add'"
           >新增</el-button
@@ -76,7 +81,27 @@
         layout="prev, pager, next"
         :total="pager.total"
       />
-    </div>
+    </div> -->
+    <BaseTable
+      :columns="columns"
+      :data="userList"
+      :pager="pager"
+      @selection-change="handleSelectionChange"
+      @handleAction="handleAction"
+      @handleCurrentChange="handleCurrentChange"
+    >
+      <template v-slot:action>
+        <el-button type="primary" @click="handleCreate" v-has:add="'user-add'"
+          >新增</el-button
+        >
+        <el-button
+          type="danger"
+          @click="handlePatchDel"
+          v-has:allDelete="'user-allDelete'"
+          >批量删除</el-button
+        >
+      </template>
+    </BaseTable>
     <el-dialog v-model="dialogVisible" title="用户新增">
       <el-form
         ref="userFormDialog"
@@ -164,14 +189,18 @@ import {
 import { success, error } from "../utils/log";
 import type { FormRules } from "element-plus";
 import util from "../utils/util";
+import QueryForm from "../../packages/QueryForm/QueryForm.vue";
+import BaseTable from "../../packages/BaseTable/BaseTable.vue";
 
 //接口定义
 interface Columns {
   //表格th
-  prop: string;
-  label: string;
+  prop?: string;
+  label?: string;
   width?: number | string;
+  type?: string;
   formatter?: (row: any, column: any, cellValue: any) => any;
+  list?: any[];
 }
 //用户查询
 interface UserQuery {
@@ -221,15 +250,55 @@ interface DeptList {
 }
 
 //ref对象
-const form = ref(0);
+const form = ref();
 const userFormDialog = ref(0);
 
 //user查询数据
-const user: UserQuery = reactive({
+const user: Ref<UserQuery> = ref({
   userId: "",
   userName: "",
-  state: 0,
+  state: 1,
 });
+
+//1.0.1
+const formItemArr = [
+  {
+    type: "input",
+    label: "用户id",
+    model: "userId",
+    placeholder: "请输入用户id",
+  },
+  {
+    type: "input",
+    label: "用户名称",
+    model: "userName",
+    placeholder: "请输入用户名称",
+  },
+  {
+    type: "select",
+    label: "状态",
+    model: "state",
+    placeholder: "请选择状态",
+    options: [
+      {
+        label: "所有",
+        value: 0,
+      },
+      {
+        label: "在职",
+        value: 1,
+      },
+      {
+        label: "离职",
+        value: 2,
+      },
+      {
+        label: "试用期",
+        value: 3,
+      },
+    ],
+  },
+];
 
 //用户数据
 const userList: Ref<User[]> = ref([]);
@@ -237,6 +306,9 @@ const userList: Ref<User[]> = ref([]);
 //表格th项
 //@ts-ignore
 const columns: Columns[] = reactive([
+  {
+    type: "selection",
+  },
   {
     label: "用户ID",
     prop: "userId",
@@ -287,6 +359,21 @@ const columns: Columns[] = reactive([
     formatter(row, column, cellValue) {
       return util.formateDate(new Date(cellValue));
     },
+  },
+  {
+    type: "action",
+    label: "操作",
+    list: [
+      {
+        text: "编辑",
+        size: "small",
+      },
+      {
+        text: "删除",
+        type: "danger",
+        size: "small",
+      },
+    ],
   },
 ]);
 //dialog状态
@@ -341,7 +428,7 @@ onMounted(() => {
 });
 //获取user用户数据列表
 const getUserLists = async () => {
-  let params = { ...user, ...pager };
+  let params = { ...user.value, ...pager };
   try {
     const { list, page } = (await getUserList(params)) as any;
     userList.value = list;
@@ -419,7 +506,9 @@ const getRoleAllLists = async () => {
   roleList.value = list;
 };
 // 查询
-const handleQuery = () => {
+const handleQuery = (value: any) => {
+  console.log(value);
+
   getUserLists();
 };
 //重置
@@ -442,6 +531,18 @@ const handleEdit = (data: UserDiaLog) => {
     Object.assign(userDialog, data);
   });
 };
+
+//1.0.1 按钮状态
+const handleAction = (data: any) => {
+  const { index, row } = data;
+  if (index == 0) {
+    handleEdit(row);
+  } else if (index == 1) {
+    handleDel(row);
+  }
+  console.log(index);
+};
+
 // dialog取消
 const handleClose = () => {
   dialogVisible.value = false;

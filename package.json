@@ -10,7 +10,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^1.1.4",
     "axios": "^0.26.1",
-    "element-plus": "^2.2.2",
+    "element-plus": "^2.2.4",
     "jsonwebtoken": "^8.5.1",
     "sass": "^1.50.0",
     "type-fest": "^2.13.0",
@@ -28,4 +28,3 @@
     "vue-tsc": "^0.29.8"
   }
 }
-

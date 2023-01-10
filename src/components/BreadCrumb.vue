@@ -16,7 +16,7 @@ const route = useRoute();
 const breadItem = computed(() => {
   return route.matched;
 });
-console.log(breadItem);
+// console.log(breadItem);
 
 onMounted(() => {});
 </script>
