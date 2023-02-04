@@ -9,14 +9,19 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="getDeptLists">查询</el-button>
+          <el-button @click="getDeptLists" type="primary">查询</el-button>
           <el-button @click="handleReset('queryform')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary" @click="handleCreate">创建</el-button>
+        <el-button
+          type="primary"
+          @click="handleCreate"
+          v-has:create="'dept-create'"
+          >创建</el-button
+        >
       </div>
       <el-table
         :data="deptList"
@@ -32,12 +37,14 @@
               size="small"
               type="primary"
               @click="handleEdit(scope.row)"
+              v-has:edit="'dept-edit'"
               >编辑</el-button
             >
             <el-button
               size="small"
               type="danger"
               @click="handleDelete(scope.row._id)"
+              v-has:delete="'dept-delete'"
               >删除</el-button
             >
           </template>

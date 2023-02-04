@@ -210,3 +210,27 @@ export function deleteChecked(params: any) {
         mock: false
     })
 }
+
+/**
+ * 新增 订单模块
+ */
+
+//查询订单
+export function getOrderList(params: any) {
+    return request({
+        url: "/order/getOrderList",
+        method: 'get',
+        data: params,
+        mock: false
+    })
+}
+
+// 发货/退款
+export function updateOrderState(params: any) {
+    return request({
+        url: "/order/updateOrderState",
+        method: 'post',
+        data: params,
+        mock: false
+    })
+}

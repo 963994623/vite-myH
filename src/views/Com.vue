@@ -207,6 +207,7 @@ import util from "../utils/util";
 
 import QueryForm from "../../packages/QueryForm";
 import BaseTable from "../../packages/BaseTable";
+import { ElMessage } from "element-plus";
 
 import {
   getComList,
@@ -335,8 +336,19 @@ const handleCreate = () => {
 
 // 批量删除
 const handlePatchDel = async () => {
-  const data = await deleteChecked({ idList: checked_id.value });
-  getComLists();
+  try {
+    const data = await deleteChecked({ idList: checked_id.value });
+    getComLists();
+    ElMessage({
+      message: "删除成功",
+      type: "success",
+    });
+  } catch (e) {
+    ElMessage({
+      message: "删除失败",
+      type: "error",
+    });
+  }
 };
 
 // dialog增加pics表单项
@@ -398,6 +410,10 @@ const submit = async () => {
         elDialogSH.value = false;
         resetForm();
         getComLists();
+        ElMessage({
+          message: "创建/修改成功",
+          type: "success",
+        });
       }
     }
   });
@@ -481,6 +497,8 @@ const columns = reactive([
       {
         text: "编辑",
         size: "small",
+        has: "edit",
+        menu: "com",
       },
     ],
   },

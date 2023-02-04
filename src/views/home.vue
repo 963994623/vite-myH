@@ -83,6 +83,7 @@ import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import request from "../utils/request";
 import { loadAsyncRoutes } from "../utils/addRouter";
+import { success } from "../utils/log";
 
 const store = useStore();
 const router = useRouter();
@@ -119,7 +120,10 @@ const handleLogout = (command: string | number | object) => {
   store.commit("saveUserInfo", "");
   userInfo.value = {};
   router.push("/login");
-  ElMessage(`click on item${command}`);
+  ElMessage({
+    message: "登出成功",
+    type: "success",
+  });
 };
 
 //获取通知数量

@@ -20,6 +20,10 @@ app.directive('has', {
         // 获取按钮权限
         let actionList = store.state.actionList;
         let value = binding.value;
+        console.log(actionList);
+        console.log(value);
+
+
         //盘点列表中是否有相对应按钮权限标识
         let hasPermission = actionList.includes(value)
         if (!hasPermission) {
@@ -34,8 +38,8 @@ app.directive('has', {
     }
 })
 
-app.use(router)
+app.use(router as any)
 await loadAsyncRoutes()
-app.use(store)
+app.use(store as any)
 app.use(Rocket)
 app.mount('#app')

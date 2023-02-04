@@ -15,6 +15,7 @@
     "typeRoots": [
       "src/globalDeclare",
     ],
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/config/index.js"],
   "references": [{ "path": "./tsconfig.node.json" }],

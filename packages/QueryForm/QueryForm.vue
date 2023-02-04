@@ -36,7 +36,7 @@ const queryModel = reactive({
 });
 
 const handleReset = () => {
-  queryForm.value.resetFields();
+  queryForm.value?.resetFields();
 };
 const handleQuery = () => {
   emit("update:modelValue", { ...queryModel });

@@ -367,11 +367,15 @@ const columns: Columns[] = reactive([
       {
         text: "编辑",
         size: "small",
+        has: "edit",
+        menu: "user",
       },
       {
         text: "删除",
         type: "danger",
         size: "small",
+        has: "delete",
+        menu: "user",
       },
     ],
   },

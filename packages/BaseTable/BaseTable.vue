@@ -12,6 +12,11 @@
           v-if="item.type == 'selection'"
           key="selection"
         ></el-table-column>
+        <el-table-column v-else-if="item.type == 'image'" v-bind="item">
+          <template #default="scope">
+            <el-image :src="scope.row.goods_big_logo"></el-image>
+          </template>
+        </el-table-column>
         <el-table-column v-else-if="!item.type" v-bind="item"></el-table-column>
         <el-table-column v-if="item.type == 'action'" v-bind="item">
           <template #default="scope">
@@ -19,6 +24,7 @@
               <el-button
                 :size="btn.size"
                 :type="btn.type"
+                v-has:btn.has="btn.menu + '-' + btn.has"
                 @click="handleAction(index, scope.row)"
                 >{{ btn.text }}</el-button
               >
@@ -38,6 +44,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { useAttrs } from "vue";
 const props = defineProps<{
   //   userList: any[];
   columns: any[];
@@ -53,4 +60,7 @@ const handleAction = (index: number, row: any) => {
 const handleCurrentChange = (currentPage: number) => {
   emits("handleCurrentChange", currentPage);
 };
+
+const att = useAttrs();
+console.log(att);
 </script>
