@@ -566,7 +566,7 @@ const handleSubmit = () => {
 
       if (res) {
         dialogVisible.value = false;
-        success("用户创建成功");
+        success("用户创建/修改成功");
         handleReset("userFormDialog");
         getUserLists();
       }

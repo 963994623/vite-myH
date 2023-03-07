@@ -165,6 +165,7 @@ const getMenu = async () => {
         color: #409eff;
         font-size: 16px;
         font-weight: 500;
+        cursor: pointer;
       }
     }
   }
